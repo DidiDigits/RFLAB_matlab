@@ -8,6 +8,9 @@ function tau_thru = electrical_delay(s11_thru, freq)
 % Output:
 %   tau_thru : Electrical delay of the connector in seconds
 
+% Constants
+KNOWN_SHORT_DELAY = 3.1785e-11;  % Known short delay (seconds)
+
 omega = 2*pi*freq;
 phase_s11 = angle(s11_thru);  % Phase in radians
 phase_unwrapped = unwrap(phase_s11);
@@ -16,8 +19,7 @@ phase_unwrapped = unwrap(phase_s11);
 p = polyfit(omega, phase_unwrapped, 1);
 tau_total = -p(1)/2;  % Correct delay calculation (round trip -> one way)
 
-tau_short = 3.1785e-11;  % Known short delay (seconds)
-tau_thru = tau_total - tau_short;  % Thru's electrical delay
+tau_thru = tau_total - KNOWN_SHORT_DELAY;  % Thru's electrical delay
 
 % % Verification plots (uncomment to use)
 % figure;
